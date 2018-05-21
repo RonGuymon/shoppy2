@@ -1,5 +1,5 @@
-#' @title Shopify Orders API endpoint
-#' @description Gets shopify orders count, all orders, or orders by hour. Returns a max of 250 orders.
+#' @title Shopify Products Endpoint
+#' @description Gets shopify products.
 #'
 #' Documentation: https://help.shopify.com/api/reference/orders/order#index
 #'
@@ -7,23 +7,23 @@
 #' @param shopifyPath Something like: mywebsite.com
 #' @param apiKey Unencoded api key
 #' @param apiPassword Unencoded apiPassword
-#' @param count Defaults to False. If set to True, it will only return the count of orders.
 #' @param verbose Whether it will return the results of the api call. Defaults to T.
 #' @param createdMin Show orders created at or after date (format: 2014-04-25T16:15:47-04:00).
 #' @param createdMax Show orders created at or before date (format: 2014-04-25T16:15:47-04:00).
+#' @param page Returns a specific page of results. Defaults to 1.
 
 #' @return If count == T, then a number. Otherwise, a dataframe of orders. This dataframe may contain nested values.
 #' @export
 #'
-getShoppyOrders <- function(shopifyPath, apiKey, apiPassword, count = F, verbose = T, createdMin = NULL, createdMax = NULL){
+getShoppyProducts <- function(shopifyPath, apiKey, apiPassword, verbose = T, createdMin = NULL, createdMax = NULL, page = NULL){
   shopifyApiKey <- paste0(apiKey,":",apiPassword) %>% jsonlite::base64_enc() %>% gsub("[\r\n]", "", .) %>% paste0("Basic ", .)
 
-  if(count == T){
-    apicall <- paste0("https://", shopifyPath, "/admin/orders/count.json")
-  }else if(count == F & is.null(createdMin) & is.null(createdMax)){
-    apicall <- paste0("https://", shopifyPath, "/admin/orders.json?limit=250")
+  if(is.null(createdMin) & is.null(createdMax) & is.null(page)){
+    apicall <- paste0("https://", shopifyPath, "/admin/products.json?limit=250")
+  }else if(!is.null(page)){
+    apicall <- paste0("https://", shopifyPath, "/admin/products.json?limit=250&page=", page)
   }else {
-    apicall <- paste0("https://", shopifyPath, "/admin/orders.json?limit=250&created_at_min=", createdMin, "&created_at_max=", createdMax)
+    apicall <- paste0("https://", shopifyPath, "/admin/products.json?limit=250&created_at_min=", createdMin, "&created_at_max=", createdMax)
   }
 
   if(verbose == T){
@@ -43,10 +43,6 @@ getShoppyOrders <- function(shopifyPath, apiKey, apiPassword, count = F, verbose
   }
 
   # Parse the data and return a dataframe
-  if(count == t){
-    df <- content(r, "parsed")
-  }else{
-    df <- content(r, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
-  }
+  df <- content(r, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
   return(df)
 }
