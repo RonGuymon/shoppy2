@@ -43,7 +43,7 @@ getShoppyOrders <- function(shopifyPath, apiKey, apiPassword, count = F, verbose
   }
 
   # Parse the data and return a dataframe
-  if(count == t){
+  if(count == T){
     df <- content(r, "parsed")
   }else{
     df <- content(r, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
