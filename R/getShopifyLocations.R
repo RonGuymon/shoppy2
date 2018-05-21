@@ -1,29 +1,25 @@
-#' @title Shopify Products Endpoint
+#' @title Shopify Location Endpoint
 #' @description Gets shopify products.
 #'
-#' Documentation: https://help.shopify.com/api/reference/orders/products#index
+#' Documentation: https://help.shopify.com/api/reference/orders/location#index
 #'
 #' Requires the data to already be summarized into daily amounts. Make sure that there are no missing periods of coviate data if covariates are being included in the model.
 #' @param shopifyPath Something like: mywebsite.com
 #' @param apiKey Unencoded api key
 #' @param apiPassword Unencoded apiPassword
 #' @param verbose Whether it will return the results of the api call. Defaults to T.
-#' @param createdMin Show orders created at or after date (format: 2014-04-25T16:15:47-04:00).
-#' @param createdMax Show orders created at or before date (format: 2014-04-25T16:15:47-04:00).
-#' @param page Returns a specific page of results. Defaults to 1.
+#' @param locationID Id of a specific location
 
-#' @return Returns a dataframe of products. May contain nested dataframes.
+#' @return If locationId is missing, then it returns a dataframe about each location. Otherwise, it returns html about a specific location.
 #' @export
 #'
-getShoppyProducts <- function(shopifyPath, apiKey, apiPassword, verbose = T, createdMin = NULL, createdMax = NULL, page = NULL){
+getShoppyLocations <- function(shopifyPath, apiKey, apiPassword, verbose = T, locationId = NULL){
   shopifyApiKey <- paste0(apiKey,":",apiPassword) %>% jsonlite::base64_enc() %>% gsub("[\r\n]", "", .) %>% paste0("Basic ", .)
 
-  if(is.null(createdMin) & is.null(createdMax) & is.null(page)){
-    apicall <- paste0("https://", shopifyPath, "/admin/products.json?limit=250")
-  }else if(!is.null(page)){
-    apicall <- paste0("https://", shopifyPath, "/admin/products.json?limit=250&page=", page)
+  if(is.null(locationId)){
+    apicall <- paste0("https://", shopifyPath, "/admin/locations.json")
   }else {
-    apicall <- paste0("https://", shopifyPath, "/admin/products.json?limit=250&created_at_min=", createdMin, "&created_at_max=", createdMax)
+    apicall <- paste0("https://", shopifyPath, "/admin/locations/#", locationId, ".json")
   }
 
   if(verbose == T){
@@ -43,6 +39,10 @@ getShoppyProducts <- function(shopifyPath, apiKey, apiPassword, verbose = T, cre
   }
 
   # Parse the data and return a dataframe
-  df <- content(r, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
+  if(is.null(locationId)){
+    df <- content(r, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
+  }else{
+    df <- content(r, "text")
+  }
   return(df)
 }
