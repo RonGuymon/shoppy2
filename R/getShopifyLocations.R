@@ -1,14 +1,12 @@
 #' @title Shopify Location Endpoint
 #' @description Gets shopify products.
 #'
-#' Documentation: https://help.shopify.com/api/reference/orders/location#index
-#'
-#' Requires the data to already be summarized into daily amounts. Make sure that there are no missing periods of coviate data if covariates are being included in the model.
+#' Documentation: https://help.shopify.com/api/reference/location#index
 #' @param shopifyPath Something like: mywebsite.com
 #' @param apiKey Unencoded api key
 #' @param apiPassword Unencoded apiPassword
 #' @param verbose Whether it will return the results of the api call. Defaults to T.
-#' @param locationID Id of a specific location
+#' @param locationID Id of a specific location in quotes.
 
 #' @return If locationId is missing, then it returns a dataframe about each location. Otherwise, it returns html about a specific location.
 #' @export

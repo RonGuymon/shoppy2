@@ -2,8 +2,6 @@
 #' @description Gets shopify orders count, all orders, or orders by hour. Returns a max of 250 orders.
 #'
 #' Documentation: https://help.shopify.com/api/reference/orders/order#index
-#'
-#' Requires the data to already be summarized into daily amounts. Make sure that there are no missing periods of coviate data if covariates are being included in the model.
 #' @param shopifyPath Something like: mywebsite.com
 #' @param apiKey Unencoded api key
 #' @param apiPassword Unencoded apiPassword
