@@ -1,6 +1,3 @@
-apiKey <- "d4ac57be7c0c9fa3149d357697605d69"
-pass <- "27c589a0386bf819a66d042a84b45e08"
-shopifyPath <- "arvowear.com"
 #' @title Shopify Orders API endpoint
 #' @description Gets shopify orders by hour.
 #'
