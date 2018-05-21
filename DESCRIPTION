@@ -14,3 +14,4 @@ Imports:
     , jsonlite (>= 1.5)
     , magrittr (>= 1.5)
     , dplyr (>= 0.7.4)
+RoxygenNote: 6.0.1
