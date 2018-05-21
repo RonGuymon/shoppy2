@@ -32,6 +32,6 @@ getShoppyOrders <- function(shopifyPath, apiKey, apiPassword, verbose = T){
   }
 
   # Parse the data and return a dataframe
-  df <- content(re, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
+  df <- content(r, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
   return(df)
 }
