@@ -13,7 +13,7 @@
 #' @export
 #'
 getShoppyOrders <- function(shopifyPath, apiKey, apiPassword, verbose = T){
-  shopifyApiKey <- paste0(apiKey,":",apiPassword) %>% base64_enc() %>% gsub("[\r\n]", "", .) %>% paste0("Basic ", .)
+  shopifyApiKey <- paste0(apiKey,":",apiPassword) %>% jsonlite::base64_enc() %>% gsub("[\r\n]", "", .) %>% paste0("Basic ", .)
 
   # Ping the api
   if(verbose == T){
@@ -32,6 +32,6 @@ getShoppyOrders <- function(shopifyPath, apiKey, apiPassword, verbose = T){
   }
 
   # Parse the data and return a dataframe
-  df <- content(re, "text") %>% fromJSON() %>% as.data.frame()
+  df <- content(re, "text") %>% jsonlite::fromJSON() %>% as.data.frame()
   return(df)
 }
