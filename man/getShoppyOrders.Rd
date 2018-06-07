@@ -4,7 +4,8 @@
 \alias{getShoppyOrders}
 \title{Shopify Orders API endpoint}
 \usage{
-getShoppyOrders(shopifyPath, apiKey, apiPassword, verbose = T)
+getShoppyOrders(shopifyPath, apiKey, apiPassword, count = F, verbose = T,
+  createdMin = NULL, createdMax = NULL)
 }
 \arguments{
 \item{shopifyPath}{Something like: mywebsite.com}
@@ -13,15 +14,19 @@ getShoppyOrders(shopifyPath, apiKey, apiPassword, verbose = T)
 
 \item{apiPassword}{Unencoded apiPassword}
 
+\item{count}{Defaults to False. If set to True, it will only return the count of orders.}
+
 \item{verbose}{Whether it will return the results of the api call. Defaults to T.}
+
+\item{createdMin}{Show orders created at or after date (format: 2014-04-25T16:15:47-04:00).}
+
+\item{createdMax}{Show orders created at or before date (format: 2014-04-25T16:15:47-04:00).}
 }
 \value{
-A dataframe of orders. This dataframe contains nested values.
+If count == T, then a number. Otherwise, a dataframe of orders. This dataframe may contain nested values.
 }
 \description{
-Gets shopify orders by hour.
+Gets shopify orders count, all orders, or orders by hour. Returns a max of 250 orders.
 
 Documentation: https://help.shopify.com/api/reference/orders/order#index
-
-Requires the data to already be summarized into daily amounts. Make sure that there are no missing periods of coviate data if covariates are being included in the model.
 }
